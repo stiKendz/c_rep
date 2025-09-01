@@ -1,6 +1,7 @@
 ﻿#include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <stdint.h>
 
 // NULL pointer
 /* НУЛЕВЫЕ указатели обычно используются для обозначения отсутствия какого-либо адреса. 
@@ -157,6 +158,42 @@ int multipleValues(){
 	return 0;
 }
 
+// Указатель на указатель
+int pointerPointer(){
+	int a;
+	int* ptr = &a;
+	int** pptr = &ptr;
+
+	**pptr = 123;
+
+	printf("Before b --- ptr %d, pptr %p \n", *ptr, *pptr);
+	int b;
+	*pptr = &b;
+	*ptr = 456;
+
+	**pptr = 789;
+	printf("After b --- ptr %d, pptr %p \n", *ptr, *pptr);
+
+	return 0;
+}
+
+// Доступ к байтам
+int accessToBytes(){
+	uint32_t var = 0xabcdef12;
+
+	uint8_t* bytes = (uint8_t*)&var;
+	*(bytes + 0); // 0x12
+	*(bytes + 1); // 0xEF
+	bytes[2]; // 0xCD
+	bytes[3]; // 0xAB
+
+	uint16_t * bytes16 = (uint16_t*)&var;
+	*(bytes16 + 0); // 0xEF12
+	*(bytes16 + 1); // 0xABCD
+
+	return 0;
+}
+
 // Константа и указатель
 int main(void)
 {
@@ -180,6 +217,12 @@ int main(void)
 
 	printf("Returning Multiple values From Function \n");
 	multipleValues();
+	
+	printf("Pointer on pointer");
+	pointerPointer();
+
+	printf("Access to bytes");
+	accessToBytes();
 
 	return 0;
 }
